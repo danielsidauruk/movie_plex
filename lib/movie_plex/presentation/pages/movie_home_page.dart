@@ -5,6 +5,7 @@ import 'package:movie_plex/core/constants.dart';
 import 'package:movie_plex/core/routes.dart';
 import 'package:movie_plex/movie_plex/domain/entities/movie.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
+import 'package:movie_plex/movie_plex/presentation/bloc/popular_movies_bloc/movie_popular_bloc.dart';
 import 'package:movie_plex/shared/presentation/widget/horizontal_loading_animation.dart';
 import 'package:movie_plex/shared/presentation/widget/search_tile.dart';
 import 'package:movie_plex/shared/presentation/widget/sub_heading_tile.dart';
@@ -83,6 +84,37 @@ class _MovieHomePageState extends State<MovieHomePage> {
                           final movieResult = state.result;
                           return buildMovieResult(movieResult);
                         } else if (state is NowPlayingMoviesError) {
+                          return Text(state.message);
+                        } else {
+                          return const Center();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                margin: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(8.0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(color: Colors.white),
+                ),
+                child: Column(
+                  children: [
+
+                    SubHeadingTile(context: context, title: 'Popular Movies', routeName: popularMoviesRoute),
+
+                    BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
+                      builder: (context, state) {
+                        if (state is PopularMoviesLoading) {
+                          return const HorizontalLoadingAnimation();
+                        } else if (state is PopularMoviesHasData) {
+                          final movieResult = state.result;
+                          return buildMovieResult(movieResult);
+                        } else if (state is PopularMoviesError) {
                           return Text(state.message);
                         } else {
                           return const Center();
