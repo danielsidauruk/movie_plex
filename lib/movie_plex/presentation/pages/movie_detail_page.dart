@@ -3,9 +3,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_plex/core/constants.dart';
+import 'package:movie_plex/core/routes.dart';
 import 'package:movie_plex/movie_plex/domain/entities/genre.dart';
 import 'package:movie_plex/movie_plex/domain/entities/movie_detail.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/movie_detail_bloc/movie_detail_bloc.dart';
+import 'package:movie_plex/movie_plex/presentation/bloc/movie_recommendations_bloc/movie_recommendations_bloc.dart';
+import 'package:movie_plex/shared/presentation/widget/horizontal_loading_animation.dart';
 
 class MovieDetailPage extends StatefulWidget {
   const MovieDetailPage({super.key, required this.id});
@@ -22,6 +25,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     Future.microtask(() {
       BlocProvider.of<MovieDetailBloc>(context, listen: false)
           .add(FetchMovieDetail(widget.id));
+      BlocProvider.of<MovieRecommendationBloc>(context, listen: false)
+          .add(FetchMovieRecommendation(widget.id));
       },
     );
   }
@@ -147,6 +152,57 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                 copyWith(fontWeight: FontWeight.bold),
                               ),
 
+                              BlocBuilder<MovieRecommendationBloc, MovieRecommendationState>(
+                                builder: (context, state) {
+                                  if (state is MovieRecommendationLoading) {
+                                    return const HorizontalLoadingAnimation();
+                                  } else if (state is MovieRecommendationError) {
+                                    return Text(state.message);
+                                  } else if (state
+                                  is MovieRecommendationHasData) {
+                                    return SizedBox(
+                                      height: 150,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          final movie = state.result[index];
+                                          return Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: InkWell(
+                                              onTap: () => Navigator.pushReplacementNamed(
+                                                context,
+                                                movieDetailRoute,
+                                                arguments: movie.id,
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                const BorderRadius.all(
+                                                  Radius.circular(8),
+                                                ),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                  'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                                  placeholder: (context, url) => Container(
+                                                    width: 80,
+                                                    height: 126,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  errorWidget: (context, url, error) => Image.asset(
+                                                    'assets/images/not_applicable_icon.png',
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        itemCount: state.result.length,
+                                      ),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              ),
                             ],
                           ),
                         ),

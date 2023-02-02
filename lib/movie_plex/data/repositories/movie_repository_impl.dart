@@ -60,4 +60,16 @@ class MovieRepositoryImpl implements MovieRepository {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getMovieRecommendations(int id) async {
+    try {
+      final result = await movieRemoteDataSource.getMovieRecommendations(id);
+      return Right(result.map((model) => model.toEntity()).toList());
+    } on ServerException {
+      return const Left(ServerFailure(''));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
 }
