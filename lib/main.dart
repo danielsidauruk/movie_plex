@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_plex/core/routes.dart';
 import 'package:movie_plex/core/utils.dart';
+import 'package:movie_plex/movie_plex/presentation/bloc/movie_detail_bloc/movie_detail_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
+import 'package:movie_plex/movie_plex/presentation/pages/movie_detail_page.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/movie_home_page.dart';
 import 'package:movie_plex/dependency_injection.dart' as di;
 import 'package:movie_plex/movie_plex/presentation/pages/movie_now_playing_page.dart';
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => di.locator<NowPlayingMoviesBloc>()),
+        BlocProvider(create: (_) => di.locator<MovieDetailBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -60,6 +63,12 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (_) => const MovieHomePage());
             case nowPlayingMoviesRoute:
               return MaterialPageRoute(builder: (_) => const NowPlayingMoviesPage());
+            case movieDetailRoute:
+              final id = settings.arguments as int;
+              return MaterialPageRoute(
+                builder: (_) => MovieDetailPage(id: id),
+                settings: settings,
+              );
           }
         },
       ),
