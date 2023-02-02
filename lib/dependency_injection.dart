@@ -8,6 +8,7 @@ import 'package:movie_plex/movie_plex/domain/use_cases/get_movie_detail.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/get_movie_recommendations.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/get_now_playing_movies.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/get_popular_movies.dart';
+import 'package:movie_plex/movie_plex/domain/use_cases/get_top_rated_movies.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/get_watchlist_movies.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/get_watchlist_status.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/remove_from_watchlist.dart';
@@ -20,6 +21,7 @@ import 'package:movie_plex/movie_plex/presentation/bloc/now_playing_movies_bloc/
 import 'package:http/http.dart' as http;
 import 'package:movie_plex/movie_plex/presentation/bloc/popular_movies_bloc/movie_popular_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/search_the_movie_bloc/search_the_movie_bloc.dart';
+import 'package:movie_plex/movie_plex/presentation/bloc/top_rated_movies_bloc/movie_top_rated_bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -36,6 +38,7 @@ Future<void> init() async {
     locator(),
     locator(),
   ));
+  locator.registerFactory(() => TopRatedMoviesBloc(locator()));
 
   // use cases
   locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));
@@ -47,6 +50,7 @@ Future<void> init() async {
   locator.registerLazySingleton(() => SaveToWatchlist(locator()));
   locator.registerLazySingleton(() => RemoveFromWatchlist(locator()));
   locator.registerLazySingleton(() => GetWatchlistMovies(locator()));
+  locator.registerLazySingleton(() => GetTopRatedMovies(locator()));
 
   // repository
   locator.registerLazySingleton<MovieRepository>(() =>

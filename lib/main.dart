@@ -8,12 +8,14 @@ import 'package:movie_plex/movie_plex/presentation/bloc/movie_watchlist_bloc/mov
 import 'package:movie_plex/movie_plex/presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/popular_movies_bloc/movie_popular_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/search_the_movie_bloc/search_the_movie_bloc.dart';
+import 'package:movie_plex/movie_plex/presentation/bloc/top_rated_movies_bloc/movie_top_rated_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/movie_detail_page.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/movie_home_page.dart';
 import 'package:movie_plex/dependency_injection.dart' as di;
 import 'package:movie_plex/movie_plex/presentation/pages/movie_now_playing_page.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/movie_popular_page.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/movie_search_page.dart';
+import 'package:movie_plex/movie_plex/presentation/pages/movie_top_rated_page.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/watchlist_page.dart';
 
 void main() async {
@@ -34,6 +36,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.locator<PopularMoviesBloc>()),
         BlocProvider(create: (_) => di.locator<MovieRecommendationBloc>()),
         BlocProvider(create: (_) => di.locator<MovieWatchlistBloc>()),
+        BlocProvider(create: (_) => di.locator<TopRatedMoviesBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -80,6 +83,8 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (_) => const PopularMoviesPage());
             case watchlistMoviesRoute:
               return MaterialPageRoute(builder: (_) => const WatchlistPage());
+            case topRatedMoviesRoute:
+              return MaterialPageRoute(builder: (_) => const TopRatedMoviesPage());
             case movieDetailRoute:
               final id = settings.arguments as int;
               return MaterialPageRoute(

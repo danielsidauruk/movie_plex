@@ -6,6 +6,7 @@ import 'package:movie_plex/core/routes.dart';
 import 'package:movie_plex/movie_plex/domain/entities/movie.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/popular_movies_bloc/movie_popular_bloc.dart';
+import 'package:movie_plex/movie_plex/presentation/bloc/top_rated_movies_bloc/movie_top_rated_bloc.dart';
 import 'package:movie_plex/shared/presentation/widget/horizontal_loading_animation.dart';
 import 'package:movie_plex/shared/presentation/widget/search_tile.dart';
 import 'package:movie_plex/shared/presentation/widget/sub_heading_tile.dart';
@@ -27,6 +28,8 @@ class _MovieHomePageState extends State<MovieHomePage> {
           .add(FetchNowPlayingMovies());
       BlocProvider.of<PopularMoviesBloc>(context, listen: false)
           .add(FetchPopularMovies());
+      BlocProvider.of<TopRatedMoviesBloc>(context, listen: false)
+          .add(FetchTopRatedMovies());
       },
     );
   }
@@ -125,7 +128,38 @@ class _MovieHomePageState extends State<MovieHomePage> {
                     ),
                   ],
                 ),
-              )
+              ),
+
+              Container(
+                margin: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(8.0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(color: Colors.white),
+                ),
+                child: Column(
+                  children: [
+
+                    SubHeadingTile(context: context, title: 'Top Rated Movies', routeName: topRatedMoviesRoute),
+
+                    BlocBuilder<TopRatedMoviesBloc, TopRatedMoviesState>(
+                      builder: (context, state) {
+                        if (state is TopRatedMoviesLoading) {
+                          return const HorizontalLoadingAnimation();
+                        } else if (state is TopRatedMoviesHasData) {
+                          final movieResult = state.result;
+                          return buildMovieResult(movieResult);
+                        } else if (state is TopRatedMoviesError) {
+                          return Text(state.message);
+                        } else {
+                          return const Center();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

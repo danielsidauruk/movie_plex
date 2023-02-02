@@ -13,4 +13,5 @@ abstract class MovieRepository {
   Future<Either<Failure, String>> removeFromWatchlist(MovieDetail movie);
   Future<bool> isAddedToWatchlist(int id);
   Future<Either<Failure, List<Movie>>> getWatchlistMovies();
+  Future<Either<Failure, List<Movie>>> getTopRatedMovies();
 }
