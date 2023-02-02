@@ -25,6 +25,8 @@ class _MovieHomePageState extends State<MovieHomePage> {
     Future.microtask(() {
       BlocProvider.of<NowPlayingMoviesBloc>(context, listen: false)
           .add(FetchNowPlayingMovies());
+      BlocProvider.of<PopularMoviesBloc>(context, listen: false)
+          .add(FetchPopularMovies());
       },
     );
   }
