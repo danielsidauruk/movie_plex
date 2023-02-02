@@ -4,6 +4,7 @@ import 'package:movie_plex/core/routes.dart';
 import 'package:movie_plex/core/utils.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/movie_detail_bloc/movie_detail_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/movie_recommendations_bloc/movie_recommendations_bloc.dart';
+import 'package:movie_plex/movie_plex/presentation/bloc/movie_watchlist_bloc/movie_watchlist_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/popular_movies_bloc/movie_popular_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/search_the_movie_bloc/search_the_movie_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:movie_plex/dependency_injection.dart' as di;
 import 'package:movie_plex/movie_plex/presentation/pages/movie_now_playing_page.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/movie_popular_page.dart';
 import 'package:movie_plex/movie_plex/presentation/pages/movie_search_page.dart';
+import 'package:movie_plex/movie_plex/presentation/pages/watchlist_page.dart';
 
 void main() async {
   await di.init();
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => di.locator<SearchTheMovieBloc>()),
         BlocProvider(create: (_) => di.locator<PopularMoviesBloc>()),
         BlocProvider(create: (_) => di.locator<MovieRecommendationBloc>()),
+        BlocProvider(create: (_) => di.locator<MovieWatchlistBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -75,6 +78,8 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (_) => const SearchTheMoviePage());
             case popularMoviesRoute:
               return MaterialPageRoute(builder: (_) => const PopularMoviesPage());
+            case watchlistMoviesRoute:
+              return MaterialPageRoute(builder: (_) => const WatchlistPage());
             case movieDetailRoute:
               final id = settings.arguments as int;
               return MaterialPageRoute(
