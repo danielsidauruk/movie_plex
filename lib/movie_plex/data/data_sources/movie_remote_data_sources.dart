@@ -9,6 +9,7 @@ import 'package:movie_plex/movie_plex/data/models/movie_response.dart';
 abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> getNowPlayingMovies();
   Future<MovieDetailResponse> getMovieDetail(int id);
+  Future<List<MovieModel>> searchMovies(String query);
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -34,6 +35,18 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
     if (response.statusCode == 200) {
       return MovieDetailResponse.fromJson(json.decode(response.body));
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<MovieModel>> searchMovies(String query) async {
+    final response = await client
+        .get(Uri.parse('$baseURL/search/movie?$apiKey&query=$query'));
+
+    if (response.statusCode == 200) {
+      return MovieResponse.fromJson(json.decode(response.body)).movieList;
     } else {
       throw ServerException();
     }

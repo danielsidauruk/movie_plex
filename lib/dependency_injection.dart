@@ -4,9 +4,11 @@ import 'package:movie_plex/movie_plex/data/repositories/movie_repository_impl.da
 import 'package:movie_plex/movie_plex/domain/repositories/movie_repository.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/get_movie_detail.dart';
 import 'package:movie_plex/movie_plex/domain/use_cases/get_now_playing_movies.dart';
+import 'package:movie_plex/movie_plex/domain/use_cases/search_the_movies.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/movie_detail_bloc/movie_detail_bloc.dart';
 import 'package:movie_plex/movie_plex/presentation/bloc/now_playing_movies_bloc/now_playing_movies_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_plex/movie_plex/presentation/bloc/search_the_movie_bloc/search_the_movie_bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -14,10 +16,12 @@ Future<void> init() async {
   // bloc
   locator.registerFactory(() => NowPlayingMoviesBloc(locator()));
   locator.registerFactory(() => MovieDetailBloc(locator()));
+  locator.registerFactory(() => SearchTheMovieBloc(locator()));
 
   // use cases
   locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));
   locator.registerLazySingleton(() => GetMovieDetail(locator()));
+  locator.registerLazySingleton(() => SearchTheMovies(locator()));
 
   // repository
   locator.registerLazySingleton<MovieRepository>(() =>

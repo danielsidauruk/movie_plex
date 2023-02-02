@@ -3,6 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:movie_plex/core/constants.dart';
 import 'package:movie_plex/core/exception.dart';
 import 'package:movie_plex/core/failure.dart';
+import 'package:movie_plex/movie_plex/data/models/movie_model.dart';
+import 'package:movie_plex/movie_plex/data/models/movie_response.dart';
 import 'package:movie_plex/movie_plex/domain/entities/movie.dart';
 import 'package:movie_plex/movie_plex/domain/entities/movie_detail.dart';
 import 'package:movie_plex/movie_plex/domain/repositories/movie_repository.dart';
@@ -30,6 +32,18 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final result = await movieRemoteDataSource.getMovieDetail(id);
       return Right(result.toEntity());
+    } on ServerException {
+      return const Left(ServerFailure(''));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> searchTheMovie(String query) async {
+    try {
+      final result = await movieRemoteDataSource.searchMovies(query);
+      return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {
