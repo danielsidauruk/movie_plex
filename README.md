@@ -1,16 +1,17 @@
-# movie_plex
+# Movie Plex
+Movie Plex adalah aplikasi yang memfokuskan pada pencarian dan rekomendasi film. Fitur utamanya meliputi merekomendasikan film sesuai dengan preferensi pengguna, menampilkan film yang sedang tayang dan populer, dan menyimpan film yang disukai oleh pengguna. Aplikasi ini tidak menyediakan fitur untuk menonton film secara langsung, namun memberikan informasi dan rekomendasi film yang membantu pengguna dalam membuat pilihan untuk menonton film.
 
-A new Flutter project.
+## List Fitur
+- Now Playing Movies
+- Movie Search
+- Popular Movies
+- Movie Detail
+- Movies Recommendation
+- Watch List
+- Top Rated Movies
 
-## Getting Started
+## Screenshot
+![github img](https://user-images.githubusercontent.com/89561572/216485389-277a3ee2-29f6-46c0-b179-cc8910f2e460.jpg)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Contributor
+Daniel Hamonangan Sidauruk | Farid Reynaldi | Rido Oktavandy Lumban Tobing
